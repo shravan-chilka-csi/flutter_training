@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/views/points_view.dart';
+import 'package:flutter_training/views/login_view.dart';
 
-class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Home'),
         centerTitle: true,
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const PointsView(),
+                builder: (context) => const LoginView(),
               ),
             );
           },
-          child: const Text('Go to points'),
+          child: const Text('Log out'),
         ),
       ),
     );
