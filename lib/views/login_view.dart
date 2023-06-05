@@ -40,6 +40,13 @@ class LoginView extends StatelessWidget {
                         builder: (context) => const HomeView(),
                       ),
                     );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Welcome back!',
+                        ),
+                      ),
+                    );
                   },
                   child: const Text('Login'),
                 ),
