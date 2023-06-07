@@ -1,12 +1,36 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_training/views/home_view.dart';
-import 'package:flutter_training/views/register_view.dart';
+import 'dart:developer';
 
-class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+import 'package:flutter/material.dart';
+import 'package:flutter_training/views/catalog_view.dart';
+
+class LoginView extends StatefulWidget {
+  const LoginView({
+    super.key,
+  });
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    log('initState');
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    log('didChangeDependencies');
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    log('build');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -15,57 +39,78 @@ class LoginView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const TextField(
-              decoration: InputDecoration(
-                hintText: 'Enter email',
+            const Text(
+              'Username',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
               ),
             ),
-            const TextField(
+            TextField(
+              controller: userNameController,
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            const Text(
+              'Password',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            TextField(
+              controller: passwordController,
               obscureText: true,
               obscuringCharacter: '*',
-              decoration: InputDecoration(
-                hintText: 'Enter password',
-              ),
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeView(),
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Welcome back!',
-                        ),
-                      ),
-                    );
-                  },
-                  child: const Text('Login'),
-                ),
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterView(),
-                      ),
-                    );
-                  },
-                  child: const Text('Register'),
-                ),
-              ],
+            const SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                loginClickEvent();
+              },
+              child: const Text('Login'),
             )
           ],
         ),
       ),
     );
+  }
+
+  void loginClickEvent() {
+    final userName = userNameController.text;
+    final password = passwordController.text;
+    if (userName == 'admin' && password == '12345678') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Welcome back!'),
+          backgroundColor: Colors.green.shade300,
+        ),
+      );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const CatalogView(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Invalid credentials!'),
+          backgroundColor: Colors.red.shade300,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    log('dispose');
+    userNameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }
