@@ -2,19 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_training/models/catalog_model.dart';
 import 'package:flutter_training/widgets/catalog_widget.dart';
 
-class CartView extends StatelessWidget {
+class CartView extends StatefulWidget {
   final List<CatalogModel> catalogModels;
   const CartView({
     Key? key,
     required this.catalogModels,
   }) : super(key: key);
 
+  @override
+  State<CartView> createState() => _CartViewState();
+}
+
+class _CartViewState extends State<CartView> {
   double getTotalPrice() {
     double sum = 0;
-    for (CatalogModel catalogModel in catalogModels) {
+    for (CatalogModel catalogModel in widget.catalogModels) {
       sum = sum + catalogModel.price;
     }
     return sum;
+  }
+
+  void removeCatalogModel(CatalogModel catalogModel) {
+    setState(() {
+      widget.catalogModels.remove(catalogModel);
+    });
   }
 
   @override
@@ -30,12 +41,15 @@ class CartView extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: catalogModels.length,
+                itemCount: widget.catalogModels.length,
                 itemBuilder: (context, index) {
-                  final catalogModel = catalogModels[index];
+                  final catalogModel = widget.catalogModels[index];
                   return CatalogWidget(
+                    label: 'Remove',
                     catalogModel: catalogModel,
-                    onTap: () {},
+                    onTap: () {
+                      removeCatalogModel(catalogModel);
+                    },
                   );
                 },
               ),
@@ -51,7 +65,7 @@ class CartView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total items added ${catalogModels.length}',
+                    'Total items added ${widget.catalogModels.length}',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,

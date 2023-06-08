@@ -79,6 +79,7 @@ class _CatalogViewState extends State<CatalogView> {
                 itemBuilder: (context, index) {
                   final catalogModel = catalogModels[index];
                   return CatalogWidget(
+                    label: 'Add',
                     catalogModel: catalogModel,
                     onTap: () {
                       addedCatalogModels.add(catalogModel);

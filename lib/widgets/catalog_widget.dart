@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/models/catalog_model.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CatalogWidget extends StatelessWidget {
   final CatalogModel catalogModel;
+  final String label;
   final VoidCallback onTap;
   const CatalogWidget({
+    required this.label,
     required this.catalogModel,
     required this.onTap,
     super.key,
@@ -28,8 +31,9 @@ class CatalogWidget extends StatelessWidget {
             children: [
               Text(
                 catalogModel.name,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
+                  fontFamily: GoogleFonts.lato().fontFamily,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -46,8 +50,8 @@ class CatalogWidget extends StatelessWidget {
             onPressed: () {
               onTap();
             },
-            child: const Text('Add'),
-          )
+            child: Text(label),
+          ),
         ],
       ),
     );
