@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/models/catalog_model.dart';
-import 'package:flutter_training/utils/utils.dart';
+import 'package:flutter_training/view_model/catalog_view_model.dart';
 import 'package:flutter_training/views/cart_view.dart';
 import 'package:flutter_training/views/login_view.dart';
 import 'package:flutter_training/widgets/catalog_widget.dart';
+import 'package:provider/provider.dart';
 
-class CatalogView extends StatefulWidget {
+class CatalogView extends StatelessWidget {
   const CatalogView({
     super.key,
   });
 
   @override
-  State<CatalogView> createState() => _CatalogViewState();
-}
-
-class _CatalogViewState extends State<CatalogView> {
-  List<CatalogModel> addedCatalogModels = [];
-
-  @override
   Widget build(BuildContext context) {
+    final catalogViewModel = context.watch<CatalogViewModel>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog'),
@@ -28,9 +23,7 @@ class _CatalogViewState extends State<CatalogView> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => CartView(
-                    catalogModels: addedCatalogModels,
-                  ),
+                  builder: (context) => const CartView(),
                 ),
               );
             },
@@ -75,14 +68,14 @@ class _CatalogViewState extends State<CatalogView> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: catalogModels.length,
+                itemCount: catalogViewModel.allCatalogModels.length,
                 itemBuilder: (context, index) {
-                  final catalogModel = catalogModels[index];
+                  final catalogModel = catalogViewModel.allCatalogModels[index];
                   return CatalogWidget(
                     label: 'Add',
                     catalogModel: catalogModel,
                     onTap: () {
-                      addedCatalogModels.add(catalogModel);
+                      catalogViewModel.addCatalogModel(catalogModel);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(

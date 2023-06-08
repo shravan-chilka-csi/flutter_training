@@ -1,35 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/models/catalog_model.dart';
+import 'package:flutter_training/view_model/catalog_view_model.dart';
 import 'package:flutter_training/widgets/catalog_widget.dart';
+import 'package:provider/provider.dart';
 
-class CartView extends StatefulWidget {
-  final List<CatalogModel> catalogModels;
+class CartView extends StatelessWidget {
   const CartView({
     Key? key,
-    required this.catalogModels,
   }) : super(key: key);
 
   @override
-  State<CartView> createState() => _CartViewState();
-}
-
-class _CartViewState extends State<CartView> {
-  double getTotalPrice() {
-    double sum = 0;
-    for (CatalogModel catalogModel in widget.catalogModels) {
-      sum = sum + catalogModel.price;
-    }
-    return sum;
-  }
-
-  void removeCatalogModel(CatalogModel catalogModel) {
-    setState(() {
-      widget.catalogModels.remove(catalogModel);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final catalogViewModel = context.watch<CatalogViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart'),
@@ -41,14 +22,15 @@ class _CartViewState extends State<CartView> {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: widget.catalogModels.length,
+                itemCount: catalogViewModel.addedCatalogModels.length,
                 itemBuilder: (context, index) {
-                  final catalogModel = widget.catalogModels[index];
+                  final catalogModel =
+                      catalogViewModel.addedCatalogModels[index];
                   return CatalogWidget(
                     label: 'Remove',
                     catalogModel: catalogModel,
                     onTap: () {
-                      removeCatalogModel(catalogModel);
+                      catalogViewModel.removeCatalogModel(catalogModel);
                     },
                   );
                 },
@@ -65,14 +47,14 @@ class _CartViewState extends State<CartView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total items added ${widget.catalogModels.length}',
+                    'Total items added ${catalogViewModel.addedCatalogModels.length}',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
                   Text(
-                    getTotalPrice().toString(),
+                    catalogViewModel.getTotalPrice().toString(),
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
