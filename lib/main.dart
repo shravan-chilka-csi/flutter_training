@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_training/view_model/catalog_view_model.dart';
-import 'package:flutter_training/views/login_view.dart';
+import 'package:flutter_training/view/counter_view.dart';
+import 'package:flutter_training/view_model/counter_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -15,12 +17,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => CatalogViewModel(),
+          create: (context) => CounterViewModel(),
         ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LoginView(),
+        home: CounterView(),
       ),
     );
   }
