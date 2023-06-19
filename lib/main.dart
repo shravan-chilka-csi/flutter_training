@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_training/view/counter_view.dart';
-import 'package:flutter_training/view_model/counter_view_model.dart';
+import 'package:flutter_training/modules/user/view/user_view.dart';
+import 'package:flutter_training/modules/user/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -17,12 +15,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => CounterViewModel(),
+          create: (context) => UserViewModel(),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: CounterView(),
+        theme: ThemeData.dark(),
+        home: const UserView(),
       ),
     );
   }
