@@ -10,42 +10,36 @@ class UserView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('User View'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: FutureBuilder<List<UserModel>?>(
-          future: context.read<UserViewModel>().getUsers(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+    return Center(
+      child: FutureBuilder<List<UserModel>?>(
+        future: context.read<UserViewModel>().getUsers(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+          if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          if (snapshot.hasData) {
+            final users = snapshot.requireData;
+            if (users == null) {
+              return const Text('No results found');
             }
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-            if (snapshot.hasData) {
-              final users = snapshot.requireData;
-              if (users == null) {
-                return const Text('No results found');
-              }
-              return ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  final user = users[index];
-                  return ListTile(
-                    leading: Image.network(user.avatar),
-                    title: Text('${user.firstName} ${user.lastName}'),
-                    subtitle: Text(user.email),
-                    trailing: Text(user.id.toString()),
-                  );
-                },
-              );
-            }
-            return Container();
-          },
-        ),
+            return ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                final user = users[index];
+                return ListTile(
+                  leading: Image.network(user.avatar),
+                  title: Text('${user.firstName} ${user.lastName}'),
+                  subtitle: Text(user.email),
+                  trailing: Text(user.id.toString()),
+                );
+              },
+            );
+          }
+          return Container();
+        },
       ),
     );
   }
